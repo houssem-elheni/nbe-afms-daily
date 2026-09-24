@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AFMS to NBE Daily Schedule</title>
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
+  <script defer src="shared/afms-flight-program.js"></script>
+  <script defer src="app.js"></script>
+  <script defer src="report-converter.js"></script>
+  <script defer src="report-app.js"></script>
+</head>
+<body>
+  <main class="app-shell">
+    <nav class="tool-tabs" aria-label="Converters">
+      <button id="dailyTab" class="tool-tab active" type="button" aria-selected="true">Daily Flight Schedule</button>
+      <button id="reportTab" class="tool-tab" type="button" aria-selected="false">Report Converter</button>
+    </nav>
+    <div id="dailyView" class="tool-view">
+    <section class="tool-panel" aria-labelledby="appTitle">
+      <div class="title-row">
+        <div class="brand-mark" aria-hidden="true">NBE</div>
+        <div>
+          <h1 id="appTitle">AFMS to Daily Flight Schedule</h1>
+          <p class="subtitle">Upload one AFMS pair report and download the fixed NBE daily workbook.</p>
+          <p class="credit">Prepared by Houssem Elheni</p>
+        </div>
+      </div>
+
+      <div id="dropZone" class="drop-zone">
+        <input id="fileInput" type="file" accept=".xlsx,.xlsm,.xls" aria-label="Upload AFMS workbook">
+        <div class="drop-copy">
+          <strong>Choose AFMS file</strong>
+          <span id="fileName">No file selected</span>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="convertButton" type="button" disabled>
+          <span aria-hidden="true">↓</span>
+          Convert and download
+        </button>
+        <button id="resetButton" type="button" class="secondary" disabled>Reset</button>
+      </div>
+
+      <div id="status" class="status" role="status">Waiting for an AFMS workbook.</div>
+    </section>
+
+    <section class="summary-panel" aria-labelledby="summaryTitle">
+      <div class="summary-header">
+        <h2 id="summaryTitle">Output Check</h2>
+        <span id="flightCount" class="count-pill">0 flights</span>
+      </div>
+      <dl class="stats">
+        <div><dt>Date</dt><dd id="reportDate">-</dd></div>
+        <div><dt>Arrivals</dt><dd id="arrivalCount">-</dd></div>
+        <div><dt>Departures</dt><dd id="departureCount">-</dd></div>
+        <div><dt>Filename</dt><dd id="outputName">-</dd></div>
+      </dl>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Arr</th>
+              <th>STA</th>
+              <th>From</th>
+              <th>Dep</th>
+              <th>STD</th>
+              <th>To</th>
+              <th>A/C</th>
+            </tr>
+          </thead>
+          <tbody id="previewBody">
+            <tr><td colspan="7" class="empty">No preview yet.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    </div>
+    <div id="reportView" class="tool-view" hidden>
+      <section class="tool-panel" aria-labelledby="reportTitle">
+        <div class="title-row">
+          <div class="brand-mark" aria-hidden="true">NBE</div>
+          <div>
+            <h1 id="reportTitle">Report Converter</h1>
+            <p class="subtitle">Pair arrivals and departures from an ExportResults workbook of any duration.</p>
+            <p class="credit">Prepared by Houssem Elheni</p>
+          </div>
+        </div>
+        <div id="reportDropZone" class="drop-zone">
+          <input id="reportFileInput" type="file" accept=".xlsx,.xlsm" aria-label="Upload ExportResults workbook">
+          <div class="drop-copy"><strong>Choose report file</strong><span id="reportFileName">No file selected</span></div>
+        </div>
+        <div class="actions">
+          <button id="reportConvertButton" type="button" disabled>Convert and download</button>
+          <button id="reportResetButton" type="button" class="secondary" disabled>Reset</button>
+        </div>
+        <div id="reportStatus" class="status" role="status">Waiting for an ExportResults workbook.</div>
+      </section>
+      <section class="summary-panel" aria-labelledby="reportPreviewTitle">
+        <div class="summary-header"><h2 id="reportPreviewTitle">Pair Check</h2><span id="reportPairCount" class="count-pill">0 rows</span></div>
+        <dl class="stats report-stats">
+          <div><dt>Period</dt><dd id="reportPeriod">-</dd></div>
+          <div><dt>Paired</dt><dd id="reportMatched">-</dd></div>
+          <div><dt>Unmatched</dt><dd id="reportUnmatched">-</dd></div>
+          <div><dt>Filename</dt><dd id="reportOutputName">-</dd></div>
+        </dl>
+        <div class="table-wrap">
+          <table class="report-table">
+            <thead><tr><th>Airline</th><th>Arrival</th><th>STA</th><th>From</th><th>Departure</th><th>STD</th><th>To</th><th>Status</th></tr></thead>
+            <tbody id="reportPreviewBody"><tr><td colspan="8" class="empty">No preview yet.</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </main>
+</body>
+</html>
