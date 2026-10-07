@@ -1,0 +1,47 @@
+name: Deploy to Firebase Hosting
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: firebase-nbe-afms-daily
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Verify app assets
+        run: |
+          node --check app.js
+          node --check report-app.js
+          node --check report-converter.js
+          node --check shared/afms-flight-program.js
+          test -s templates/NBE-template.xlsx
+
+      - name: Install Firebase CLI
+        run: npm install --prefix "$RUNNER_TEMP/firebase-cli" --no-save --package-lock=false firebase-tools@13.13.1
+
+      - name: Authenticate with dedicated Hosting account
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_NBE_AFMS_DEPLOY }}
+          create_credentials_file: true
+          export_environment_variables: true
+
+      - name: Deploy only the NBE AFMS site
+        run: node "$RUNNER_TEMP/firebase-cli/node_modules/firebase-tools/lib/bin/firebase.js" deploy --config firebase.json --only hosting:nbe-afms-daily --project dtnh-roster-engine --non-interactive
+
+      - name: Verify Firebase URL
+        run: |
+          curl -fsSL 'https://nbe-afms-daily.web.app/' | grep -q 'Report Converter'
+          curl -fsSL 'https://nbe-afms-daily.web.app/report-converter.js' | grep -q 'DTNH_REPORT_CONVERTER'
