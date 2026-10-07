@@ -1,0 +1,17 @@
+{
+  "hosting": {
+    "site": "nbe-afms-daily",
+    "public": ".",
+    "ignore": ["firebase.json", "README.md", "**/.*", "**/node_modules/**"],
+    "headers": [
+      {
+        "source": "/index.html",
+        "headers": [{ "key": "Cache-Control", "value": "no-cache" }]
+      },
+      {
+        "source": "**/*.@(js|css)",
+        "headers": [{ "key": "Cache-Control", "value": "public,max-age=300" }]
+      }
+    ]
+  }
+}
