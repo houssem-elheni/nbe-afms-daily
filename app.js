@@ -52,7 +52,6 @@
     "EZS|1568": "81DV",
     "EZY|2275": "73GW",
     "EZY|2276": "52TN",
-    "EZY|2281": "53JD",
     "EZY|2282": "68YJ",
     "EZY|2639": "25UE",
     "EZY|2640": "61KH",
@@ -63,9 +62,7 @@
     "EZY|2794": "12KM",
     "EZY|3171": "93AX",
     "EZY|3172": "93AX",
-    "EZY|3329": "73CA",
     "EZY|3330": "73CA",
-    "EZY|3491": "92XM",
     "EZY|3492": "92XM",
     "EZY|5623": "87RK",
     "EZY|5624": "39GY",
@@ -114,6 +111,11 @@
     "TOM|851": "7JB",
     "TOM|858": "4BL",
     "TOM|859": "7MT"
+  });
+  const CALLSIGN_CORRECTIONS = Object.freeze({
+    "EZY|2281": "46AH",
+    "EZY|3329": "43KR",
+    "EZY|3491": ""
   });
 
   const els = {
@@ -235,7 +237,8 @@
     const compactNumber = match[2].replace(/\s+/g, "");
     const [baseNumber, existingSuffix] = compactNumber.split("/");
     const mappedSuffix = FLIGHT_SUFFIX_BY_KEY[`${carrier}|${baseNumber}`] || FLIGHT_SUFFIX_BY_KEY[`${icao}|${baseNumber}`] || "";
-    const suffix = existingSuffix || mappedSuffix;
+    const correction = CALLSIGN_CORRECTIONS[`${carrier}|${baseNumber}`];
+    const suffix = correction !== undefined ? correction : existingSuffix || mappedSuffix;
     return {
       carrier,
       icao,
