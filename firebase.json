@@ -2,7 +2,7 @@
   "hosting": {
     "site": "nbe-afms-daily",
     "public": ".",
-    "ignore": ["firebase.json", "README.md", "**/.*", "**/node_modules/**"],
+    "ignore": ["firebase.json", "README.md", "tests/**", "**/.*", "**/node_modules/**"],
     "headers": [
       {
         "source": "/index.html",

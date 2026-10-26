@@ -26,6 +26,7 @@ jobs:
           node --check report-app.js
           node --check report-converter.js
           node --check shared/afms-flight-program.js
+          node --test tests/*.test.cjs
           test -s templates/NBE-template.xlsx
 
       - name: Install Firebase CLI

@@ -117,6 +117,28 @@
     "EZY|3329": "43KR",
     "EZY|3491": ""
   });
+  const WINTER_CALLSIGNS_FROM = "2026-10-25";
+  const WINTER_CALLSIGNS_TO = "2027-03-27";
+  // An empty suffix means the ATC callsign is the full commercial flight number.
+  const WINTER_CALLSIGNS = Object.freeze({
+    TOM: Object.freeze({
+      "229": "2DK", "262": "78W", "428": "4AN", "468": "2HJ",
+      "475": "4LG", "580": "73H", "588": "3AC", "589": "77J",
+      "682": "59V", "683": "5LW", "851": "68W", "858": "25B", "859": "1XE"
+    }),
+    JAF: Object.freeze({ "2711": "34G", "2751": "60E", "2752": "59G" }),
+    EZS: Object.freeze({ "1273": "96NZ", "1274": "", "1579": "65LT", "1580": "67GV" }),
+    EZY: Object.freeze({
+      "2275": "97TR", "2276": "68UE", "2277": "96VU", "2278": "58TL",
+      "2651": "469E", "2652": "93ED", "2879": "94WN", "2880": "85ZD",
+      "3071": "", "3072": "76WN", "3119": "31YX", "3120": "",
+      "3329": "15EF", "3330": "65LA", "3491": "16NL", "3492": "",
+      "5623": "47XZ", "5624": "85YK", "5729": "41NL", "5730": "",
+      "6617": "92RK", "6618": "25FY", "8853": "86EB", "8854": "35CR",
+      "8855": "89XC", "8856": "86KJ", "8863": "75JA", "8864": "32YK",
+      "8866": "52QY", "8881": "86DP", "8882": "48FE"
+    })
+  });
 
   const els = {
     dropZone: document.getElementById("dropZone"),
@@ -229,8 +251,8 @@
     return rows;
   }
 
-  function splitFlight(value) {
-    const match = String(value || "").trim().toUpperCase().match(/^([A-Z0-9]+)\s*(.*)$/);
+  function splitFlight(value, operationDate) {
+    const match = String(value || "").trim().toUpperCase().match(/^([A-Z]{2,3}|[A-Z]\d|\d[A-Z])\s*(\d+[A-Z]?(?:\s*\/\s*[A-Z0-9]+)?)$/);
     if (!match) return { carrier: "", icao: "", number: "" };
     const carrier = match[1];
     const icao = ICAO_BY_CARRIER[carrier] || carrier;
@@ -238,7 +260,15 @@
     const [baseNumber, existingSuffix] = compactNumber.split("/");
     const mappedSuffix = FLIGHT_SUFFIX_BY_KEY[`${carrier}|${baseNumber}`] || FLIGHT_SUFFIX_BY_KEY[`${icao}|${baseNumber}`] || "";
     const correction = CALLSIGN_CORRECTIONS[`${carrier}|${baseNumber}`];
-    const suffix = correction !== undefined ? correction : existingSuffix || mappedSuffix;
+    let suffix = correction !== undefined ? correction : existingSuffix || mappedSuffix;
+    const flightDate = dateKey(operationDate);
+    const winterCalls = WINTER_CALLSIGNS[icao];
+    if (winterCalls && flightDate >= WINTER_CALLSIGNS_FROM) {
+      // Winter allocations replace stale source suffixes and the previous season's table.
+      suffix = flightDate <= WINTER_CALLSIGNS_TO
+        ? winterCalls[baseNumber] || ""
+        : existingSuffix || "";
+    }
     return {
       carrier,
       icao,
@@ -303,9 +333,9 @@
     }
   }
 
-  function setFlightRow(worksheet, rowNumber, flight) {
-    const arrival = splitFlight(flight.arrivalFlight);
-    const departure = splitFlight(flight.departureFlight);
+  function setFlightRow(worksheet, rowNumber, flight, reportDate) {
+    const arrival = splitFlight(flight.arrivalFlight, flight.sta || reportDate);
+    const departure = splitFlight(flight.departureFlight, flight.std || reportDate);
     const values = [
       arrival.carrier,
       arrival.icao,
@@ -390,7 +420,7 @@
     worksheet.getCell("J8").value = "DEPARTURE  ";
 
     parsed.flights.forEach((flight, index) => {
-      setFlightRow(worksheet, START_ROW + index, flight);
+      setFlightRow(worksheet, START_ROW + index, flight, parsed.reportDate);
     });
     cleanRemarksBlock(worksheet, parsed.flights.length);
     worksheet.views = [{ showGridLines: false }];
