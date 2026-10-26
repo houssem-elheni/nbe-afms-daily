@@ -5,18 +5,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AFMS to NBE Daily Schedule</title>
   <link rel="stylesheet" href="styles.css">
-  <script defer src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
-  <script defer src="shared/afms-flight-program.js"></script>
-  <script defer src="app.js"></script>
-  <script defer src="report-converter.js"></script>
-  <script defer src="report-app.js"></script>
+  <script defer src="auth.js"></script>
 </head>
 <body>
-  <main class="app-shell">
+  <section id="loginView" class="login-view" aria-labelledby="loginTitle">
+    <div class="login-panel">
+      <div class="title-row">
+        <div class="brand-mark" aria-hidden="true">NBE</div>
+        <div><h1 id="loginTitle">AFMS</h1><p class="subtitle">Operations sign in</p></div>
+      </div>
+      <form id="loginForm">
+        <label for="loginUsername">Username</label>
+        <input id="loginUsername" name="username" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" required>
+        <label for="loginPassword">Password</label>
+        <input id="loginPassword" name="password" type="password" autocomplete="current-password" required>
+        <button id="loginButton" type="submit" disabled>Sign in</button>
+      </form>
+      <p id="loginStatus" class="login-status" role="status" aria-live="polite">Connecting...</p>
+      <noscript><p class="login-status error">JavaScript is required to sign in.</p></noscript>
+    </div>
+  </section>
+  <main id="appShell" class="app-shell" hidden inert>
+    <div class="app-toolbar">
     <nav class="tool-tabs" aria-label="Converters">
       <button id="dailyTab" class="tool-tab active" type="button" aria-selected="true">Daily Flight Schedule</button>
       <button id="reportTab" class="tool-tab" type="button" aria-selected="false">Report Converter</button>
     </nav>
+    <div class="session-controls"><span>nbeops</span><button id="signOutButton" class="secondary" type="button">Sign out</button></div>
+    </div>
     <div id="dailyView" class="tool-view">
     <section class="tool-panel" aria-labelledby="appTitle">
       <div class="title-row">

@@ -11,6 +11,12 @@ This static app has two tools:
 
 The conversion runs in the browser. Uploaded workbooks are not sent to a server.
 
+## Sign In
+
+Both converters require the shared `nbeops` account. Firebase Authentication checks the password; no password is stored in the published JavaScript. The username maps internally to `nbeops@nbe-afms.local`, and only its specific Firebase UID is accepted. There is no registration screen. Sessions last for the browser tab, survive refresh, and are cleared by Sign out.
+
+This is application sign-in, not private static-file hosting: the source code and blank workbook template are still public on Firebase Hosting and GitHub Pages. Uploaded workbook data stays in the browser. Any future server-side data or APIs must independently enforce authentication and authorization. Manage the shared account in Firebase Authentication in `dtnh-roster-engine`.
+
 ## Winter 2026/2027 Callsigns
 
 The Daily Flight Schedule export uses the 51 flight allocations from the supplied TUI and EasyJet sheets for 25 October 2026 through 27 March 2027, inclusive. The EasyJet sheet has an inconsistent printed end year; the winter 2026/2027 period follows the TUI heading. The handwritten correction for EZY5624 is `EZY85YK`.

@@ -17,12 +17,67 @@
   box-sizing: border-box;
 }
 
+[hidden] { display: none !important; }
+
 body {
   margin: 0;
   min-height: 100vh;
   background: var(--bg);
   color: var(--ink);
 }
+
+.login-view {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: 24px 16px;
+}
+
+.login-panel {
+  width: min(100%, 380px);
+  padding: 28px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.login-panel .brand-mark { flex: 0 0 52px; }
+
+.login-panel form { display: grid; gap: 10px; }
+.login-panel label { font-size: 14px; font-weight: 700; }
+.login-panel input {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid #9aa8b8;
+  border-radius: 6px;
+  background: var(--panel);
+  color: var(--ink);
+  font: inherit;
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+input:focus-visible, button:focus-visible {
+  outline: 3px solid #8fc4fa;
+  outline-offset: 2px;
+}
+
+.login-status {
+  min-height: 40px;
+  margin-top: 14px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.login-status.error { color: var(--error); }
+.app-toolbar { display: flex; align-items: center; gap: 16px; margin-bottom: 18px; }
+.session-controls { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--muted); }
+.session-controls button { white-space: nowrap; }
 
 .app-shell {
   width: min(1180px, calc(100% - 32px));
@@ -32,8 +87,9 @@ body {
 
 .tool-tabs {
   display: flex;
+  flex: 1;
   gap: 4px;
-  margin-bottom: 18px;
+  min-width: 0;
   border-bottom: 1px solid var(--line);
 }
 
@@ -64,6 +120,7 @@ body {
 
 .tool-panel,
 .summary-panel {
+  min-width: 0;
   background: var(--panel);
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -305,6 +362,12 @@ tr:last-child td {
 }
 
 @media (max-width: 460px) {
+  .app-toolbar { flex-wrap: wrap; gap: 10px; }
+  .tool-tabs { flex-basis: 100%; }
+  .tool-tab { flex: 1; padding: 10px; }
+  .session-controls { margin-left: auto; }
+  .login-panel { padding: 22px; }
+
   .tool-panel,
   .summary-panel {
     padding: 16px;

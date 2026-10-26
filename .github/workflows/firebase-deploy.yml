@@ -23,6 +23,7 @@ jobs:
       - name: Verify app assets
         run: |
           node --check app.js
+          node --check auth.js
           node --check report-app.js
           node --check report-converter.js
           node --check shared/afms-flight-program.js
