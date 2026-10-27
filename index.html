@@ -11,9 +11,10 @@
   <section id="loginView" class="login-view" aria-labelledby="loginTitle">
     <div class="login-panel">
       <div class="title-row">
-        <div class="brand-mark" aria-hidden="true">NBE</div>
-        <div><h1 id="loginTitle">AFMS</h1><p class="subtitle">Operations sign in</p></div>
+        <div class="brand-mark" aria-hidden="true"><span class="icon icon-plane"></span></div>
+        <div><p class="station-label">NBE OPERATIONS</p><h1 id="loginTitle">AFMS</h1></div>
       </div>
+      <h2 class="login-heading">Sign in</h2>
       <form id="loginForm">
         <label for="loginUsername">Username</label>
         <input id="loginUsername" name="username" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" required>
@@ -23,30 +24,40 @@
       </form>
       <p id="loginStatus" class="login-status" role="status" aria-live="polite">Connecting...</p>
       <noscript><p class="login-status error">JavaScript is required to sign in.</p></noscript>
+      <p class="credit">by houssem elheni</p>
     </div>
   </section>
   <main id="appShell" class="app-shell" hidden inert>
+    <header class="app-masthead">
+      <div class="product-identity">
+        <div class="brand-mark" aria-hidden="true"><span class="icon icon-plane"></span></div>
+        <div><p class="product-name">AFMS</p><p class="station-label">NBE / Flight operations</p></div>
+      </div>
+      <div class="session-controls">
+        <span class="session-user"><span class="icon icon-user" aria-hidden="true"></span>nbeops</span>
+        <button id="signOutButton" class="secondary" type="button"><span class="icon icon-sign-out" aria-hidden="true"></span>Sign out</button>
+      </div>
+    </header>
     <div class="app-toolbar">
     <nav class="tool-tabs" aria-label="Converters">
-      <button id="dailyTab" class="tool-tab active" type="button" aria-selected="true">Daily Flight Schedule</button>
-      <button id="reportTab" class="tool-tab" type="button" aria-selected="false">Report Converter</button>
+      <button id="dailyTab" class="tool-tab active" type="button" aria-selected="true"><span class="icon icon-calendar" aria-hidden="true"></span>Daily Flight Schedule</button>
+      <button id="reportTab" class="tool-tab" type="button" aria-selected="false"><span class="icon icon-spreadsheet" aria-hidden="true"></span>Report Converter</button>
     </nav>
-    <div class="session-controls"><span>nbeops</span><button id="signOutButton" class="secondary" type="button">Sign out</button></div>
     </div>
     <div id="dailyView" class="tool-view">
     <section class="tool-panel" aria-labelledby="appTitle">
       <div class="title-row">
-        <div class="brand-mark" aria-hidden="true">NBE</div>
+        <div class="section-icon" aria-hidden="true"><span class="icon icon-calendar"></span></div>
         <div>
-          <h1 id="appTitle">AFMS to Daily Flight Schedule</h1>
-          <p class="subtitle">Upload one AFMS pair report and download the fixed NBE daily workbook.</p>
-          <p class="credit">Prepared by Houssem Elheni</p>
+          <h1 id="appTitle">Daily Flight Schedule</h1>
+          <p class="credit">by houssem elheni</p>
         </div>
       </div>
 
       <div id="dropZone" class="drop-zone">
         <input id="fileInput" type="file" accept=".xlsx,.xlsm,.xls" aria-label="Upload AFMS workbook">
         <div class="drop-copy">
+          <span class="upload-icon" aria-hidden="true"><span class="icon icon-upload"></span></span>
           <strong>Choose AFMS file</strong>
           <span id="fileName">No file selected</span>
         </div>
@@ -54,10 +65,10 @@
 
       <div class="actions">
         <button id="convertButton" type="button" disabled>
-          <span aria-hidden="true">↓</span>
+          <span class="icon icon-download" aria-hidden="true"></span>
           Convert and download
         </button>
-        <button id="resetButton" type="button" class="secondary" disabled>Reset</button>
+        <button id="resetButton" type="button" class="secondary" disabled><span class="icon icon-reset" aria-hidden="true"></span>Reset</button>
       </div>
 
       <div id="status" class="status" role="status">Waiting for an AFMS workbook.</div>
@@ -97,20 +108,19 @@
     <div id="reportView" class="tool-view" hidden>
       <section class="tool-panel" aria-labelledby="reportTitle">
         <div class="title-row">
-          <div class="brand-mark" aria-hidden="true">NBE</div>
+          <div class="section-icon" aria-hidden="true"><span class="icon icon-spreadsheet"></span></div>
           <div>
             <h1 id="reportTitle">Report Converter</h1>
-            <p class="subtitle">Pair arrivals and departures from an ExportResults workbook of any duration.</p>
-            <p class="credit">Prepared by Houssem Elheni</p>
+            <p class="credit">by houssem elheni</p>
           </div>
         </div>
         <div id="reportDropZone" class="drop-zone">
           <input id="reportFileInput" type="file" accept=".xlsx,.xlsm" aria-label="Upload ExportResults workbook">
-          <div class="drop-copy"><strong>Choose report file</strong><span id="reportFileName">No file selected</span></div>
+          <div class="drop-copy"><span class="upload-icon" aria-hidden="true"><span class="icon icon-upload"></span></span><strong>Choose report file</strong><span id="reportFileName">No file selected</span></div>
         </div>
         <div class="actions">
-          <button id="reportConvertButton" type="button" disabled>Convert and download</button>
-          <button id="reportResetButton" type="button" class="secondary" disabled>Reset</button>
+          <button id="reportConvertButton" type="button" disabled><span class="icon icon-download" aria-hidden="true"></span>Convert and download</button>
+          <button id="reportResetButton" type="button" class="secondary" disabled><span class="icon icon-reset" aria-hidden="true"></span>Reset</button>
         </div>
         <div id="reportStatus" class="status" role="status">Waiting for an ExportResults workbook.</div>
       </section>
